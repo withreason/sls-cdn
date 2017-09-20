@@ -1,0 +1,60 @@
+service: serverless-image-resizer
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: ${env:AWS_REGION}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "s3:*"
+      Resource: "*"
+  environment:
+    SOURCE_S3_BUCKET_NAME: ${env:SOURCE_S3_BUCKET_NAME}
+    SOURCE_S3_PREFIX: ${env:SOURCE_S3_PREFIX}
+
+functions:
+  resizer:
+    handler: index.resizer
+    events:
+      - http:
+          path: resizer/{params}
+          method: get
+      - http:
+          path: resizer/{params}/{request_filename}
+          method: get
+
+plugins:
+  - serverless-webpack
+  - create-s3-bucket-redirect
+  - serverless-offline
+
+custom:
+  webpack: webpack.config.js
+  webpackIncludeModules: true
+
+resources:
+  Resources:
+    SourceImageBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${env:SOURCE_S3_BUCKET_NAME}
+        AccessControl: PublicRead
+        # CorsRules:
+        #   AllowedHeader:
+        #     - '*'
+        #   AllowedOrigin:
+        #     - '*'
+        #   AllowedMethods:
+        #     - GET
+        #     - HEAD
+        # WebsiteConfiguration:
+        #   ErrorDocument: 'error.html'
+        #   IndexDocument: 'index.html'
+        #   RoutingRules:
+        #     - RedirectRule:
+        #         HttpRedirectCode: 302
+        #         HostName: "google.com"
+        #         Protocol: https
+        #       RoutingRuleCondition:
+        #         HttpErrorCodeReturnedEquals: 404

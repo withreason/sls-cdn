@@ -1,0 +1,33 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb/base",
+  "rules": {
+    "max-len": ["error", 120],
+    "semi": ["error", "always"],
+    "no-underscore-dangle": 0,
+    "class-methods-use-this": 0,
+    "no-param-reassign": 0,
+    "import/prefer-default-export": 1,
+    "no-restricted-syntax": 1,
+    "no-continue": 1,
+    "consistent-return": 1,
+    "guard-for-in": 1,
+    "no-plusplus": 1,
+    "import/no-extraneous-dependencies": 1,
+    "new-cap": 1,
+    "indent": [2, "tab"],
+    "no-tabs": 0,
+    "no-console": 0,
+    "newline-before-return": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }]
+  },
+  "globals": {
+    "it": true,
+    "describe": true,
+    "should": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true
+  }
+}
